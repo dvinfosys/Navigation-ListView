@@ -12,4 +12,11 @@ Before starting, I have faced few problems before starting expandablelistview an
 
 # Output
 
+# ExpandableListView Show
+
 ![alt text](https://github.com/dvinfosys/Android-Custom-Navigation-Drawer-Using-ExpandableListView/blob/master/SrceenShort/screenshot-2018-05-14_11.08.21.271.png)
+
+# ExpandableListView Hide
+
+![alt text](https://github.com/dvinfosys/Android-Custom-Navigation-Drawer-Using-ExpandableListView/blob/master/SrceenShort/screenshot-2018-05-14_16.30.25.153.png)
+
