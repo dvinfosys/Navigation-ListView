@@ -30,8 +30,38 @@ Check out [NavigationListView releases](https://github.com/dvinfosys/Navigation-
 
 you could customize following UI controls in your Android application
 
+### xml
+
+```xml
+    <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_main">
+    
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="170dp">
+    
+                <com.dvinfosys.ui.NavigationListView
+                    android:id="@+id/navigation_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:divider="@null"
+                    android:groupIndicator="@null"
+                    android:scrollbars="vertical" />
+            </ScrollView>
+    
+        </com.google.android.material.navigation.NavigationView>
+```
+### java
+
 ```java
-    NavigationListView listView= findViewById(R.id.expandable_navigation);
+    NavigationListView listView= findViewById(R.id.navigation_list_view);
     listView.init(this)
                     .addHeaderModel(new HeaderModel("Home"))
                     .addHeaderModel(new HeaderModel("Cart",  R.drawable.ic_cardbackgroud, true,true, false, Color.WHITE))
