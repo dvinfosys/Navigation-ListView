@@ -1,25 +1,27 @@
 package com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.Activity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
-import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.Model.ChildModel;
-import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.Model.HeaderModel;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.R;
 import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.Utils.Common;
-import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.View.ExpandableNavigationListView;
+import com.dvinfosys.model.ChildModel;
+import com.dvinfosys.model.HeaderModel;
+import com.dvinfosys.ui.NavigationListView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,19 +29,19 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-    private ExpandableNavigationListView navigationExpandableListView;
+    private NavigationListView listView;
     private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        context=MainActivity.this;
+        context = MainActivity.this;
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,23 +50,22 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        navigationExpandableListView = (ExpandableNavigationListView) findViewById(R.id.expandable_navigation);
+        listView = findViewById(R.id.expandable_navigation);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationExpandableListView
-                .init(this)
+        listView.init(this)
                 .addHeaderModel(new HeaderModel("Home"))
-                .addHeaderModel(new HeaderModel("Cart", R.drawable.cartbackground, false, true, false))
+                .addHeaderModel(new HeaderModel("Cart",  R.drawable.ic_cardbackgroud, true,true, false, Color.WHITE))
                 .addHeaderModel(
-                        new HeaderModel("Categories", R.drawable.add, true)
+                        new HeaderModel("Categories", -1,true)
                                 .addChildModel(new ChildModel("Men's Fashion"))
                                 .addChildModel(new ChildModel("Woman's Fashion"))
                                 .addChildModel(new ChildModel("Babies and Family"))
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity
                 .addOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                     @Override
                     public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                        navigationExpandableListView.setSelected(groupPosition);
+                        listView.setSelected(groupPosition);
 
                         //drawer.closeDrawer(GravityCompat.START);
                         if (id == 0) {
@@ -111,8 +112,7 @@ public class MainActivity extends AppCompatActivity
                 .addOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                     @Override
                     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                        navigationExpandableListView.setSelected(groupPosition, childPosition);
-
+                        listView.setSelected(groupPosition, childPosition);
                         if (id == 0) {
                             Common.showToast(context, "Man's Fashion");
                         } else if (id == 1) {
@@ -127,12 +127,12 @@ public class MainActivity extends AppCompatActivity
                         return false;
                     }
                 });
-        navigationExpandableListView.expandGroup(2);
+        //listView.expandGroup(2);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity
 
         }*/
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

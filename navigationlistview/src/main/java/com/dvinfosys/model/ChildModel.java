@@ -1,9 +1,4 @@
-package com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.Model;
-
-/**
- * @author nirwannursabda
- * @date 07/03/18
- */
+package com.dvinfosys.model;
 
 public class ChildModel {
     String title;

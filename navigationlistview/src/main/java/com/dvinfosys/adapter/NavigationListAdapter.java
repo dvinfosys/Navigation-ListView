@@ -1,4 +1,4 @@
-package com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.View;
+package com.dvinfosys.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -10,20 +10,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.Model.ChildModel;
-import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.Model.HeaderModel;
-import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.R;
+import com.dvinfosys.R;
+import com.dvinfosys.model.ChildModel;
+import com.dvinfosys.model.HeaderModel;
 
 import java.util.List;
 
-class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class NavigationListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<HeaderModel> listHeader;
 
-    public ExpandableListAdapter(Context context
-            , List<HeaderModel> listHeader) {
-
+    public NavigationListAdapter(Context context, List<HeaderModel> listHeader) {
         this.context = context;
         this.listHeader = listHeader;
     }
@@ -47,10 +45,10 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.navigation_list_item, null);
+            convertView = infalInflater.inflate(R.layout.list_item, null);
         }
 
-        TextView txtListChild = (TextView) convertView
+        TextView txtListChild = convertView
                 .findViewById(R.id.lblListItem);
 
         txtListChild.setText(childText.getTitle());
@@ -89,26 +87,30 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
+    public View getGroupView(final int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
 
-        HeaderModel header = (HeaderModel) getGroup(groupPosition);
+        final HeaderModel header = (HeaderModel) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.navigation_list_group, null);
+            convertView = infalInflater.inflate(R.layout.list_group, null);
         }
 
         RelativeLayout layoutGroup = convertView.findViewById(R.id.layout_group);
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+        TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
         ImageView ivGroupIndicator = convertView.findViewById(R.id.ivGroupIndicator);
         ImageView iconMenu = convertView.findViewById(R.id.icon_menu);
         TextView isNew = convertView.findViewById(R.id.is_new);
 
         lblListHeader.setText(header.getTitle());
 
-        if (header.getResource() != -1)
+        if (header.getResource() != -1) {
             iconMenu.setBackgroundResource(header.getResource());
+            iconMenu.setVisibility(View.VISIBLE);
+        } else {
+            iconMenu.setVisibility(View.GONE);
+        }
 
         if (header.isHasChild()) {
             lblListHeader.setTypeface(null, Typeface.NORMAL);
@@ -123,16 +125,22 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         if (header.isNew()) {
+            if (header.isCartBudget()) {
+                ivGroupIndicator.setVisibility(View.GONE);
+                if (header.getIndicatorResource() != -1) {
+                    isNew.setBackgroundResource(header.getIndicatorResource());
+                }
+            }
+            isNew.setTextColor(header.getCartBudgetTextColor());
             isNew.setVisibility(View.VISIBLE);
-
         } else {
             isNew.setVisibility(View.GONE);
         }
 
         if (isExpanded) {
-            ivGroupIndicator.setImageResource(R.drawable.nav_min);
+            ivGroupIndicator.setImageResource(R.drawable.ic_remove);
         } else {
-            ivGroupIndicator.setImageResource(R.drawable.add);
+            ivGroupIndicator.setImageResource(R.drawable.ic_add);
         }
 
         return convertView;

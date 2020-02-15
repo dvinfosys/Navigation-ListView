@@ -1,39 +1,38 @@
-package com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.View;
+package com.dvinfosys.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
-import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.Model.ChildModel;
-import com.dvinfosys.androidcustomnavigationdrawerusingexpandablelistview.Model.HeaderModel;
+import com.dvinfosys.adapter.NavigationListAdapter;
+import com.dvinfosys.model.ChildModel;
+import com.dvinfosys.model.HeaderModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+public class NavigationListView extends ExpandableListView {
 
-public class ExpandableNavigationListView extends ExpandableListView {
     private Context context;
     private int currentSelection = 0;
     private int currentChildSelection = -1;
 
     private List<HeaderModel> listHeader;
-
     private OnGroupClickListener onGroupClickListener;
     private OnChildClickListener onChildClickListener;
+    private NavigationListAdapter adapter;
 
-    private ExpandableListAdapter expandableListAdapter;
-
-    public ExpandableNavigationListView(Context context) {
+    public NavigationListView(Context context) {
         super(context);
     }
 
-    public ExpandableNavigationListView(Context context, AttributeSet attrs) {
+    public NavigationListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ExpandableNavigationListView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public NavigationListView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     @Override
@@ -45,44 +44,41 @@ public class ExpandableNavigationListView extends ExpandableListView {
         params.height = getMeasuredHeight();
     }
 
-    public ExpandableNavigationListView init(Context context) {
+    public NavigationListView init(Context context) {
         this.context = context;
         this.listHeader = new ArrayList<>();
-
         return this;
     }
 
-    public ExpandableNavigationListView setListMenu(List<HeaderModel> listHeader) {
-
-        if (listHeader != null)
-            this.listHeader.addAll(listHeader);
-
+    public NavigationListView setListMenu(List<HeaderModel> list) {
+        if (list != null) {
+            this.listHeader.addAll(list);
+        }
         return this;
     }
 
-    public ExpandableNavigationListView addOnGroupClickListener(OnGroupClickListener onGroupClickListener) {
+    public NavigationListView addOnGroupClickListener(OnGroupClickListener onGroupClickListener) {
         this.onGroupClickListener = onGroupClickListener;
         setOnGroupClickListener(this.onGroupClickListener);
-
         return this;
     }
 
-    public ExpandableNavigationListView addOnChildClickListener(OnChildClickListener onChildClickListener) {
+    public NavigationListView addOnChildClickListener(OnChildClickListener onChildClickListener) {
         this.onChildClickListener = onChildClickListener;
-
         setOnChildClickListener(this.onChildClickListener);
         return this;
     }
 
-    public ExpandableNavigationListView addHeaderModel(HeaderModel headerModel) {
-        this.listHeader.add(headerModel);
+    public NavigationListView addHeaderModel(HeaderModel model) {
+        if (model != null) {
+            this.listHeader.add(model);
+        }
         return this;
     }
 
-    public ExpandableNavigationListView build() {
-        expandableListAdapter = new ExpandableListAdapter(this.context, this.listHeader);
-        setAdapter(expandableListAdapter);
-
+    public NavigationListView build() {
+        adapter = new NavigationListAdapter(this.context, this.listHeader);
+        setAdapter(adapter);
         return this;
     }
 
@@ -104,7 +100,7 @@ public class ExpandableNavigationListView extends ExpandableListView {
             headerModel.setSelected(true);
 
             currentSelection = groupPosition;
-            expandableListAdapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -126,6 +122,6 @@ public class ExpandableNavigationListView extends ExpandableListView {
 
         ChildModel childModel = listHeader.get(groupPosition).getChildModelList().get(childPosition);
         childModel.setSelected(true);
-        expandableListAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 }
