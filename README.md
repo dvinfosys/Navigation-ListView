@@ -1,5 +1,6 @@
-# NavigationListView
+# NavigationListView 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+
 This post is improvements to the previous posts discussed on customization of navigation drawer and highlighting specific row of expandable listview.
 
 Since there are few comments regarding the highlight of expandable list view post, thought to show with new post using custom navigation drawer. But how can we see the highlight of the expandable list view in handset, let’s take navigation drawer and customize it to use expandable list view.
